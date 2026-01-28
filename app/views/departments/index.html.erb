@@ -1,0 +1,36 @@
+<h1>Departments</h1>
+
+<% if flash[:notice] %>
+  <div class="notice"><%= flash[:notice] %></div>
+<% end %>
+
+<div class="departments-grid">
+  <% if @departments.empty? %>
+    <p class="empty-state">No departments found.</p>
+  <% else %>
+    <% @departments.each do |department| %>
+      <div class="department-card">
+        <h3><%= link_to department.name, department_path(department) %></h3>
+        <p><%= department.description %></p>
+        
+        <div class="department-stats">
+          <div class="stat">
+            <strong>Users:</strong> <%= department.user_count %>
+          </div>
+          <div class="stat">
+            <strong>Tasks:</strong> <%= department.task_count %>
+          </div>
+          <div class="stat">
+            <strong>Open:</strong> <%= department.incomplete_task_count %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="actions-section">
+  <% if current_user&.admin? %>
+    <%= link_to 'New Department', new_department_path, class: 'action-btn primary' %>
+  <% end %>
+</div>

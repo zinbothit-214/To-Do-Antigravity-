@@ -1,0 +1,16 @@
+<h1>Edit Task</h1>
+
+<% if flash[:notice] %>
+  <div class="notice"><%= flash[:notice] %></div>
+<% end %>
+
+<div class="edit-task">
+  <%= form_with(model: @task, local: true, class: "task-form edit-form") do |form| %>
+    <%= render 'form', task: @task, form: form %>
+  <% end %>
+</div>
+
+<div class="back-link">
+  <%= link_to '← Back to Task', @task %> |
+  <%= link_to '← Back to List', tasks_path %>
+</div>

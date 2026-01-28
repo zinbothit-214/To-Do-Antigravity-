@@ -1,0 +1,31 @@
+<h1>Edit Department</h1>
+
+<%= form_with(model: @department, local: true) do |form| %>
+  <% if @department.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@department.errors.count, "error") %> prohibited this department from being saved:</h2>
+      <ul>
+        <% @department.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name, placeholder: "Department name..." %>
+    </div>
+    
+    <div class="field">
+      <%= form.label :description %>
+      <%= form.text_area :description, placeholder: "Department description...", rows: 4 %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Update Department", class: "submit-btn" %>
+    <%= link_to "Cancel", @department, class: "cancel-btn" %>
+  </div>
+<% end %>

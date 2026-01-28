@@ -1,0 +1,58 @@
+<div id="task_<%= task.id %>" class="task <%= 'completed' if task.status == 'completed' %>">
+  <div class="task-header">
+    <div class="task-priority" style="color: <%= task.priority_color %>">
+      <%= task.priority_icon %> <%= task.priority.humanize %>
+    </div>
+    <div class="task-status-badge" style="background-color: <%= task.status_badge[:color] %>">
+      <%= task.status_badge[:text] %>
+    </div>
+  </div>
+  
+  <%= form_with(model: task, local: false, method: :patch, class: "toggle-form") do |form| %>
+    <div class="task-content">
+      <%= form.check_box :status, { checked: task.status == 'completed', onchange: "this.form.submit();" }, { class: "task-checkbox" } %>
+      
+      <div class="task-info">
+        <span class="task-title" 
+              title="<%= task.description&.truncate(100) || 'No description' %>"
+              data-description="<%= task.description || '' %>">
+          <%= task.title %>
+        </span>
+        <% if task.description.present? %>
+          <span class="description-indicator">📝</span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  
+  <div class="task-meta">
+    <% if task.department %>
+      <span class="department-tag">
+        <%= task.department.name %>
+      </span>
+    <% end %>
+    
+    <% if task.assignee %>
+      <span class="assignee-tag">
+        Assigned to: <%= task.assignee.name %>
+      </span>
+    <% end %>
+    
+    <span class="created-tag">
+      Created: <%= task.created_at.strftime('%m/%d/%Y') %>
+    </span>
+  </div>
+  
+  <div class="task-actions">
+    <%= link_to 'View', task, class: 'details-btn' %>
+    <% if task.updateable_by?(current_user) %>
+      <%= link_to 'Edit', edit_task_path(task), class: 'edit-btn' %>
+    <% end %>
+    <% if task.assign?(current_user) && !task.assignee %>
+      <%= link_to 'Assign', assign_task_path(task), method: :patch, class: 'assign-btn' %>
+    <% end %>
+    <% if task.updateable_by?(current_user) || current_user.admin? %>
+      <%= link_to 'Delete', task, method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete-btn' %>
+    <% end %>
+  </div>
+</div>

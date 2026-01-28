@@ -1,0 +1,71 @@
+<% if task.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
+    <ul>
+      <% task.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="form-row">
+  <div class="field-group">
+    <div class="field">
+      <%= form.label :title %>
+      <%= form.text_field :title, placeholder: "Task title...", class: "title-field" %>
+    </div>
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="field-group">
+    <div class="field">
+      <%= form.label :priority %>
+      <%= form.select :priority, Task.priorities.keys.map { |p| [p.humanize, p] }, { prompt: "Select Priority" }, class: "priority-select" %>
+    </div>
+    
+    <% if accessible_departments.count > 1 || current_user&.admin? %>
+      <div class="field">
+        <%= form.label :department_id %>
+        <%= form.collection_select :department_id, accessible_departments, :id, :name, { prompt: "Select Department" }, class: "department-select" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="field-group">
+    <% if current_user&.admin? || current_user&.manager? %>
+      <div class="field">
+        <%= form.label :assignee_id %>
+        <%= form.collection_select :assignee_id, accessible_users, :id, :name, { prompt: "Select Assignee" }, class: "assignee-select" %>
+      </div>
+    <% end %>
+    
+    <div class="field">
+      <%= form.label :status %>
+      <%= form.select :status, Task.statuses.keys.map { |s| [s.humanize, s] }, { prompt: "Select Status" }, class: "status-select" %>
+    </div>
+  </div>
+</div>
+
+<div class="description-section">
+  <div class="description-toggle" onclick="toggleDescription()">
+    <span id="toggle-text">+ Add Description</span>
+  </div>
+  <div id="description-field" class="description-field" style="display: none;">
+    <%= form.text_area :description, placeholder: "Add a detailed description...", rows: 4, class: "description-textarea" %>
+  </div>
+</div>
+
+<% if form.object.new_record? %>
+  <div class="actions">
+    <%= form.submit "Create Task", class: "submit-btn" %>
+  </div>
+<% else %>
+  <div class="actions">
+    <%= form.submit "Update Task", class: "submit-btn" %>
+    <%= link_to "Cancel", task, class: "cancel-btn" %>
+  </div>
+<% end %>

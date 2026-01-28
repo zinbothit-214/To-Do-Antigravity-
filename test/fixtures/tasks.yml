@@ -1,0 +1,24 @@
+one:
+  title: Setup Server
+  description: Initial server setup for the IT department
+  priority: urgent
+  status: open
+  creator: admin
+  department: one
+
+two:
+  title: Recruitment Plan
+  description: Plan for new hires
+  priority: planning
+  status: open
+  creator: manager
+  department: two
+  assignee: employee
+
+completed_task:
+  title: Policy Update
+  description: Update the company policy
+  priority: review
+  status: completed
+  creator: manager
+  department: two

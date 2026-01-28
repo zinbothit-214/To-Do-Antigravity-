@@ -1,0 +1,40 @@
+<h1><%= @department.name %></h1>
+
+<div class="department-info">
+  <p><%= @department.description %></p>
+  
+  <div class="department-stats">
+    <h3>Department Statistics</h3>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <strong>Total Users:</strong> <%= @department.user_count %>
+      </div>
+      <div class="stat-item">
+        <strong>Total Tasks:</strong> <%= @department.task_count %>
+      </div>
+      <div class="stat-item">
+        <strong>Open Tasks:</strong> <%= @department.incomplete_task_count %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tasks-section">
+  <h2>Department Tasks</h2>
+  <% if @tasks.empty? %>
+    <p class="empty-state">No tasks in this department yet.</p>
+  <% else %>
+    <div class="tasks-list">
+      <% @tasks.each do |task| %>
+        <%= render 'tasks/task', task: task %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div class="department-actions">
+  <%= link_to 'Back to All Departments', departments_path, class: 'action-btn secondary' %>
+  <% if current_user&.can_manage_department?(@department) %>
+    <%= link_to 'Edit Department', edit_department_path(@department), class: 'action-btn primary' %>
+  <% end %>
+</div>

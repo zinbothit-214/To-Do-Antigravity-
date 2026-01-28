@@ -1,0 +1,22 @@
+// Update task list if on index page to preserve sorting
+var tasksList = document.querySelector('.tasks-list');
+if (tasksList) {
+  <% @tasks = Task.ordered %>
+  tasksList.innerHTML = '<%= j render partial: "task", collection: @tasks, as: :task %>';
+  
+  // Handle empty state if necessary
+  var emptyState = document.querySelector('.empty-state');
+  if (emptyState) {
+    if (<%= @tasks.any? %>) {
+      emptyState.style.display = 'none';
+    } else {
+      emptyState.style.display = 'block';
+    }
+  }
+}
+
+// Update task detail page if present
+var taskDetail = document.getElementById('task_detail_<%= @task.id %>');
+if (taskDetail) {
+  taskDetail.outerHTML = '<%= j render template: "tasks/show", formats: [:html], layout: false %>';
+}
