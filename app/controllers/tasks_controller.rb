@@ -53,7 +53,6 @@ class TasksController < ApplicationController
   end
 
   def edit
-    authorize_task_update!(@task)
     @departments = accessible_departments.ordered
   end
 
@@ -72,7 +71,14 @@ class TasksController < ApplicationController
   end
 
   def update
-    if @task.update(task_params)
+    updated_params = task_params.to_h
+    if updated_params[:status] == "1"
+      updated_params[:status] = "completed"
+    elsif updated_params[:status] == "0"
+      updated_params[:status] = "open"
+    end
+
+    if @task.update(updated_params)
       respond_to do |format|
         format.html { redirect_to @task, notice: 'Task was successfully updated.' }
         format.js

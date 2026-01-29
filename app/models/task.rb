@@ -4,6 +4,7 @@ class Task < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   
   has_many :task_activities, dependent: :destroy
+  has_many :comments, dependent: :destroy
   
   enum priority: { 
     planning: 'planning', 

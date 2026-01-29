@@ -24,6 +24,15 @@
     <% end %>
   </div>
 
+  <div class="comments-section">
+    <h2>Conversations</h2>
+    <%= render 'comments/form', task: @task, comment: Comment.new %>
+    
+    <div id="comments-list">
+      <%= render partial: 'comments/comment', collection: @task.comments.order(created_at: :desc) %>
+    </div>
+  </div>
+
   <div class="task-actions">
     <%= form_with(model: @task, local: false, method: :patch, class: "toggle-status-form") do |form| %>
       <%= form.hidden_field :completed, value: !@task.completed %>

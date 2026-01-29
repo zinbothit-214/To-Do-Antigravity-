@@ -1,36 +1,50 @@
-<h1>Departments</h1>
+<div class="dashboard-header">
+  <h1>Departments</h1>
+  <% if current_user&.admin? %>
+    <%= link_to 'New Department', new_department_path, class: 'btn btn-success' %>
+  <% end %>
+</div>
 
 <% if flash[:notice] %>
   <div class="notice"><%= flash[:notice] %></div>
 <% end %>
 
-<div class="departments-grid">
-  <% if @departments.empty? %>
-    <p class="empty-state">No departments found.</p>
-  <% else %>
-    <% @departments.each do |department| %>
-      <div class="department-card">
-        <h3><%= link_to department.name, department_path(department) %></h3>
-        <p><%= department.description %></p>
-        
-        <div class="department-stats">
-          <div class="stat">
-            <strong>Users:</strong> <%= department.user_count %>
+<div class="content-container">
+  <div class="departments-grid">
+    <% if @departments.empty? %>
+      <div class="empty-state-card">
+        <p class="empty-state">No departments found.</p>
+      </div>
+    <% else %>
+      <% @departments.each do |department| %>
+        <div class="department-card-modern">
+          <div class="department-card-header">
+            <h3><%= link_to department.name, department_path(department) %></h3>
+            <div class="department-actions-mini">
+              <% if current_user&.admin? %>
+                <%= link_to 'Edit', edit_department_path(department), class: 'btn-mini' %>
+              <% end %>
+            </div>
           </div>
-          <div class="stat">
-            <strong>Tasks:</strong> <%= department.task_count %>
-          </div>
-          <div class="stat">
-            <strong>Open:</strong> <%= department.incomplete_task_count %>
+          
+          <p class="department-desc"><%= department.description&.truncate(100) || "No description provided." %></p>
+          
+          <div class="department-stats-grid">
+            <div class="dept-stat-box">
+              <span class="dept-stat-label">Users</span>
+              <span class="dept-stat-value"><%= department.user_count %></span>
+            </div>
+            <div class="dept-stat-box">
+              <span class="dept-stat-label">Tasks</span>
+              <span class="dept-stat-value"><%= department.task_count %></span>
+            </div>
+            <div class="dept-stat-box">
+              <span class="dept-stat-label">Open</span>
+              <span class="dept-stat-value text-primary"><%= department.incomplete_task_count %></span>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
-  <% end %>
-</div>
-
-<div class="actions-section">
-  <% if current_user&.admin? %>
-    <%= link_to 'New Department', new_department_path, class: 'action-btn primary' %>
-  <% end %>
+  </div>
 </div>

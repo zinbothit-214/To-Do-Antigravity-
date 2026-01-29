@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   
   include AuthorizationConcern
   
+  before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_current_user_department
   

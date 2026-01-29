@@ -1,58 +1,53 @@
-<div id="task_<%= task.id %>" class="task <%= 'completed' if task.status == 'completed' %>">
-  <div class="task-header">
-    <div class="task-priority" style="color: <%= task.priority_color %>">
-      <%= task.priority_icon %> <%= task.priority.humanize %>
-    </div>
-    <div class="task-status-badge" style="background-color: <%= task.status_badge[:color] %>">
-      <%= task.status_badge[:text] %>
-    </div>
-  </div>
-  
-  <%= form_with(model: task, local: false, method: :patch, class: "toggle-form") do |form| %>
-    <div class="task-content">
-      <%= form.check_box :status, { checked: task.status == 'completed', onchange: "this.form.submit();" }, { class: "task-checkbox" } %>
-      
-      <div class="task-info">
-        <span class="task-title" 
-              title="<%= task.description&.truncate(100) || 'No description' %>"
-              data-description="<%= task.description || '' %>">
-          <%= task.title %>
-        </span>
-        <% if task.description.present? %>
-          <span class="description-indicator">📝</span>
+<div id="task_<%= task.id %>" class="task-card <%= task.status %>" data-priority="<%= task.priority %>">
+  <div class="task-card-header">
+    <div class="task-card-title-section">
+      <div class="task-checkbox-wrapper">
+        <%= form_with(model: task, local: false, method: :patch) do |f| %>
+          <%= f.check_box :status, { checked: task.status == 'completed', onchange: "this.form.submit();" }, "completed", "open" %>
         <% end %>
       </div>
+      <h3 class="task-card-title"><%= task.title %></h3>
+      <% if task.description.present? %>
+        <span class="task-desc-indicator" title="Has description">📝</span>
+      <% end %>
     </div>
-  <% end %>
-  
-  <div class="task-meta">
-    <% if task.department %>
-      <span class="department-tag">
-        <%= task.department.name %>
-      </span>
-    <% end %>
     
-    <% if task.assignee %>
-      <span class="assignee-tag">
-        Assigned to: <%= task.assignee.name %>
+    <div class="task-card-badges">
+      <span class="badge-priority" style="color: <%= task.priority_color %>; border-color: <%= task.priority_color %>22; background-color: <%= task.priority_color %>11;">
+        <%= task.priority_icon %> <%= task.priority.humanize %>
       </span>
-    <% end %>
-    
-    <span class="created-tag">
-      Created: <%= task.created_at.strftime('%m/%d/%Y') %>
-    </span>
+      <span class="badge-status" style="background-color: <%= task.status_badge[:color] %>">
+        <%= task.status_badge[:text] %>
+      </span>
+    </div>
   </div>
-  
-  <div class="task-actions">
-    <%= link_to 'View', task, class: 'details-btn' %>
-    <% if task.updateable_by?(current_user) %>
-      <%= link_to 'Edit', edit_task_path(task), class: 'edit-btn' %>
-    <% end %>
-    <% if task.assign?(current_user) && !task.assignee %>
-      <%= link_to 'Assign', assign_task_path(task), method: :patch, class: 'assign-btn' %>
-    <% end %>
-    <% if task.updateable_by?(current_user) || current_user.admin? %>
-      <%= link_to 'Delete', task, method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete-btn' %>
-    <% end %>
+
+  <div class="task-card-body">
+    <div class="task-card-info-grid">
+      <div class="info-item">
+        <span class="info-label">Dept</span>
+        <span class="info-value"><%= task.department&.name || 'Personal' %></span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Assignee</span>
+        <span class="info-value"><%= task.assignee&.name || 'Unassigned' %></span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Created</span>
+        <span class="info-value"><%= task.created_at.strftime('%b %d, %Y') %></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card-footer">
+    <div class="task-card-actions">
+      <%= link_to 'View', task, class: 'btn-task-action' %>
+      <% if task.updateable_by?(current_user) %>
+        <%= link_to 'Edit', edit_task_path(task), class: 'btn-task-action' %>
+      <% end %>
+      <% if task.updateable_by?(current_user) || current_user.admin? %>
+        <%= link_to 'Delete', task, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-task-action action-delete' %>
+      <% end %>
+    </div>
   </div>
 </div>

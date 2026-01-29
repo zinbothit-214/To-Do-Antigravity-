@@ -21,52 +21,38 @@
   <div class="sidebar">
     <div class="filter-section">
       <h3>Filters</h3>
-      
-      <% if accessible_departments.count > 1 %>
-        <div class="filter-group">
-          <label>Department</label>
-          <%= form_with(url: tasks_path, method: :get, local: true, class: "filter-form") do |f| %>
+      <%= form_with(url: tasks_path, method: :get, local: true, class: "combined-filter-form") do |f| %>
+        <% if accessible_departments.count > 1 %>
+          <div class="filter-group">
+            <label>Department</label>
             <%= f.select :department_id, 
                 options_for_select([[ "All Departments", "" ]] + accessible_departments.map { |d| [d.name, d.id] }, 
                 params[:department_id]), 
-                { onchange: "this.form.submit();" }, 
-                { class: "filter-select" } %>
-          <% end %>
-        </div>
-      <% end %>
-      
-      <div class="filter-group">
-        <label>Priority</label>
-        <%= form_with(url: tasks_path, method: :get, local: true, class: "filter-form") do |f| %>
+                {}, 
+                { class: "filter-select", onchange: "this.form.submit();" } %>
+          </div>
+        <% end %>
+        
+        <div class="filter-group">
+          <label>Priority</label>
           <%= f.select :priority, 
               options_for_select([[ "All Priorities", "" ]] + Task.priorities.keys.map { |p| [p.humanize, p] }, 
               params[:priority]), 
-              { onchange: "this.form.submit();" }, 
-              { class: "filter-select" } %>
-        <% end %>
-      </div>
-      
-      <div class="filter-group">
-        <label>Status</label>
-        <%= form_with(url: tasks_path, method: :get, local: true, class: "filter-form") do |f| %>
+              {}, 
+              { class: "filter-select", onchange: "this.form.submit();" } %>
+        </div>
+        
+        <div class="filter-group">
+          <label>Status</label>
           <%= f.select :status, 
               options_for_select([[ "All Statuses", "" ]] + Task.statuses.keys.map { |s| [s.humanize, s] }, 
               params[:status]), 
-              { onchange: "this.form.submit();" }, 
-              { class: "filter-select" } %>
-        <% end %>
-      </div>
-    </div>
-    
-    <div class="actions-section">
-      <h3>Actions</h3>
-      <%= link_to 'Dashboard', dashboard_path, class: 'action-btn' %>
-      <%= link_to 'My Tasks', my_tasks_path, class: 'action-btn' if current_user.employee? %>
-      <%= link_to 'Departments', departments_path, class: 'action-btn' if current_user.admin? || current_user.manager? %>
-      <% if current_user.admin? %>
-        <%= link_to 'New User', new_user_registration_path, class: 'action-btn' %>
+              {}, 
+              { class: "filter-select", onchange: "this.form.submit();" } %>
+        </div>
       <% end %>
     </div>
+    
   </div>
 
   <div class="main-content">

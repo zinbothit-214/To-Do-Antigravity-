@@ -1,0 +1,16 @@
+var commentsList = document.getElementById('comments-list');
+var commentForm = document.querySelector('.comment-form');
+
+if (commentsList && <%= @comment.persisted? %>) {
+  var newComment = '<%= j render partial: "comments/comment", locals: { comment: @comment } %>';
+  commentsList.insertAdjacentHTML('afterbegin', newComment);
+  commentForm.reset();
+  
+  // Optional: add a small animation
+  var commentElement = document.getElementById('comment_<%= @comment.id %>');
+  commentElement.style.opacity = '0';
+  commentElement.style.transition = 'opacity 0.5s';
+  setTimeout(function() {
+    commentElement.style.opacity = '1';
+  }, 10);
+}

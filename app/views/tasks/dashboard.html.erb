@@ -119,10 +119,10 @@
   </div>
   
   <div class="dashboard-actions">
-    <%= link_to 'View All Tasks', tasks_path, class: 'action-btn primary' %>
-    <%= link_to 'Create New Task', new_task_path, class: 'action-btn success' %>
+    <%= link_to 'View All Tasks', tasks_path, class: 'btn btn-primary' %>
+    <%= link_to 'Create New Task', new_task_path, class: 'btn btn-success' %>
     <% if current_user.admin? || current_user.manager? %>
-      <%= link_to 'Manage Departments', departments_path, class: 'action-btn secondary' %>
+      <%= link_to 'Manage Departments', departments_path, class: 'btn btn-secondary' %>
     <% end %>
   </div>
 </div>

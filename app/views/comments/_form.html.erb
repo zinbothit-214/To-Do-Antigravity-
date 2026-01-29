@@ -1,0 +1,8 @@
+<%= form_with(model: [task, comment], local: false, class: "comment-form") do |f| %>
+  <div class="field">
+    <%= f.text_area :content, placeholder: "Add a comment...", class: "comment-textarea", required: true %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Post Comment", class: "submit-btn" %>
+  </div>
+<% end %>

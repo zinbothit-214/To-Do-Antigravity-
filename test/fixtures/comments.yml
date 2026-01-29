@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: "This is a test comment"
+  user: employee
+  task: one
+
+two:
+  content: "Another test comment"
+  user: manager
+  task: two
