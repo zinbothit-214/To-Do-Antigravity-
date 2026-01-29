@@ -1,0 +1,8 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Edit User: <%= @user.name %></h1>
+    <%= link_to 'Back to Users', users_path, class: 'btn btn-secondary' %>
+  </div>
+
+  <%= render 'form', user: @user %>
+</div>

@@ -1,0 +1,49 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Assigned Tasks: <%= @user.name %></h1>
+    <%= link_to 'Back to Users', users_path, class: 'btn btn-secondary' %>
+  </div>
+
+  <div class="main-content">
+    <% if @tasks.any? %>
+      <div class="tasks-list">
+        <% @tasks.each do |task| %>
+          <div class="task-card <%= 'completed' if task.status == 'completed' %>">
+            <div class="task-card-header">
+              <div class="task-card-title-section">
+                <h3 class="task-card-title"><%= task.title %></h3>
+              </div>
+              <div class="task-card-badges">
+                <span class="badge-priority <%= task.priority %>"><%= task.priority.humanize %></span>
+                <span class="badge-status" style="background-color: <%= task.status == 'completed' ? '#22c55e' : '#f59e0b' %>">
+                  <%= task.status.humanize %>
+                </span>
+              </div>
+            </div>
+            
+            <div class="task-card-body">
+              <div class="task-card-info-grid">
+                <div class="info-item">
+                  <span class="info-label">Department</span>
+                  <span class="info-value"><%= task.department&.name || 'N/A' %></span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Due Date</span>
+                  <span class="info-value"><%= task.due_date&.strftime("%b %d, %Y") || 'No date' %></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="task-card-footer">
+              <%= link_to 'View Details', task_path(task), class: 'btn-task-action' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <p>No tasks assigned to this user.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

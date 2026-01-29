@@ -7,6 +7,12 @@ Rails.application.routes.draw do
     end
   end
   
+  resources :users do
+    member do
+      get :tasks
+    end
+  end
+  
   resources :tasks do
     member do
       patch :assign

@@ -1,0 +1,47 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>User Details: <%= @user.name %></h1>
+    <div class="dashboard-actions">
+      <%= link_to 'Edit User', edit_user_path(@user), class: 'btn btn-primary' %>
+      <%= link_to 'View Tasks', tasks_user_path(@user), class: 'btn btn-secondary' %>
+      <%= link_to 'Back to Users', users_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Email</div>
+        <div class="stat-value" style="font-size: 16px; margin-top: 10px;"><%= @user.email %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Role</div>
+        <div class="stat-value" style="font-size: 16px; margin-top: 10px;">
+          <span class="badge-priority <%= @user.role %>"><%= @user.role.humanize %></span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Department</div>
+        <div class="stat-value" style="font-size: 16px; margin-top: 10px;"><%= @user.department&.name || 'N/A' %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Member Since</div>
+        <div class="stat-value" style="font-size: 16px; margin-top: 10px;"><%= @user.created_at.strftime("%B %d, %Y") %></div>
+      </div>
+    </div>
+
+    <div style="margin-top: 40px;">
+      <h2>Activity Overview</h2>
+      <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="stat-card">
+          <div class="stat-number"><%= @user.assigned_tasks.count %></div>
+          <div class="stat-label">Tasks Assigned</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number"><%= @user.assigned_tasks.where(status: 'completed').count %></div>
+          <div class="stat-label">Tasks Completed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

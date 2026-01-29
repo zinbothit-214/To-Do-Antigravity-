@@ -1,0 +1,61 @@
+<div class="auth-container" style="max-width: 600px;">
+  <%= form_with(model: user, local: true, class: 'auth-form') do |f| %>
+    <% if user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <ul>
+          <% user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :name %>
+      <%= f.text_field :name, required: true, placeholder: "Enter full name" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :email %>
+      <%= f.email_field :email, required: true, placeholder: "Enter email address" %>
+    </div>
+
+    <% if user.new_record? %>
+      <div class="field">
+        <%= f.label :password %>
+        <%= f.password_field :password, required: true, placeholder: "Minimum 6 characters" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation, required: true %>
+      </div>
+    <% else %>
+      <div class="field">
+        <%= f.label :password, "New Password (leave blank if no change)" %>
+        <%= f.password_field :password, placeholder: "Leave blank to keep current password" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation %>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :role %>
+      <%= f.select :role, User.roles.keys.map { |r| [r.humanize, r] }, { include_blank: "Select Role" }, required: true %>
+    </div>
+
+    <div class="field">
+      <%= f.label :department_id %>
+      <%= f.collection_select :department_id, Department.ordered, :id, :name, { include_blank: "No Department (Admin/Independent)" } %>
+    </div>
+
+    <div class="actions" style="margin-top: 30px;">
+      <%= f.submit user.new_record? ? "Create User" : "Update User", class: "auth-submit-btn" %>
+      <%= link_to 'Cancel', users_path, class: "cancel-btn", style: "width: 100%; text-align: center; margin-top: 10px; box-sizing: border-box;" %>
+    </div>
+  <% end %>
+</div>
